@@ -23,10 +23,10 @@ var cnt_arr = [];
 var sub_arr = [];
 var acp = {};
 
-conf.useprotocol = 'http'; // select one for 'http' or 'mqtt' or 'coap' or 'ws'
+conf.useprotocol = 'mqtt'; // select one for 'http' or 'mqtt' or 'coap' or 'ws'
 
 // build cse
-cse.host        = 'localhost';
+cse.host        = '192.168.0.21';
 cse.port        = '7579';
 cse.name        = 'Mobius';
 cse.id          = '/Mobius';
@@ -40,10 +40,10 @@ if(aei != 'S') {
 else {
     ae.id = 'S';
 }
-ae.id = 'mobius';
+ae.id = 'B104';
 ae.parent       = '/' + cse.name;
-ae.name         = 'mobius';
-ae.appid        = 'measure_co2';
+ae.name         = 'B104';
+ae.appid        = 'collect_B104';
 ae.port         = '9727';
 ae.bodytype     = 'json'; // select 'json' or 'xml' or 'cbor'
 ae.tasport      = '3105';
@@ -52,13 +52,22 @@ ae.tasport      = '3105';
 var count = 0;
 cnt_arr[count] = {};
 cnt_arr[count].parent = '/' + cse.name + '/' + ae.name;
+cnt_arr[count++].name = 'cnt-localTime';
+cnt_arr[count] = {};
+cnt_arr[count].parent = '/' + cse.name + '/' + ae.name;
+cnt_arr[count++].name = 'cnt-temp';
+cnt_arr[count] = {};
+cnt_arr[count].parent = '/' + cse.name + '/' + ae.name;
+cnt_arr[count++].name = 'cnt-humid';
+cnt_arr[count] = {};
+cnt_arr[count].parent = '/' + cse.name + '/' + ae.name;
 cnt_arr[count++].name = 'cnt-co2';
 cnt_arr[count] = {};
 cnt_arr[count].parent = '/' + cse.name + '/' + ae.name;
-cnt_arr[count++].name = 'cnt-led';
-//cnt_arr[count] = {};
-//cnt_arr[count].parent = '/' + cse.name + '/' + ae.name;
-//cnt_arr[count++].name = 'cnt-timer';
+cnt_arr[count++].name = 'cnt-smoke';
+
+
+
 
 // build sub
 count = 0;
