@@ -2,6 +2,7 @@
   "name": "thyme",
   "version": "1.7.2",
   "dependencies": {
+    "async": "^2.5.0",
     "body-parser": "^1.17.0",
     "cbor": "^3.0.0",
     "coap": "^0.21.0",
