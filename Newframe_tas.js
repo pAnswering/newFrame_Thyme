@@ -96,7 +96,7 @@ upload_client.on('data', function(data) {
                 console.log('Received: data format mismatch');
             }
             else {
-	
+
                 if (sink_obj.con == 'hello') {
                     console.log('Received: ' + data);
 
@@ -149,7 +149,7 @@ var sensor = {
 		}
 		else count ++;
 		console.log(temp);
-        
+
            }
            else if(upload_arr[i].ctname == 'cnt-humid') {
                var cin = {ctname: upload_arr[i].ctname, con: readout.humidity.toFixed(2)};
@@ -159,7 +159,7 @@ var sensor = {
            }
        }
    }
-   
+
    console.log('Temperature: ' + readout.temperature.toFixed(4) + 'C, ' + 'humidity: ' + readout.humidity.toFixed(2) + '%');
    setTimeout(function () {
      sensor.read();
@@ -183,3 +183,12 @@ upload_client.on('close', function() {
     upload_client.destroy();
     tas_state = 'reconnect';
 });
+
+//
+var Gpio = require('rpi-gpio')
+Gpio.setup(14, Gpio.DIR_IN, readInput);
+function readInput(){
+  Gpio.read(14,function(err, value){
+    console.log('The value is'+value);
+  });
+}
