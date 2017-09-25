@@ -58,10 +58,14 @@ cnt_arr[count].parent = '/' + cse.name + '/' + ae.name;
 cnt_arr[count++].name = 'cnt-humid';
 cnt_arr[count] = {};
 cnt_arr[count].parent = '/' + cse.name + '/' + ae.name;
+<<<<<<< HEAD
 cnt_arr[count++].name = 'cnt-smoke';
 cnt_arr[count] = {};
 cnt_arr[count].parent = '/' + cse.name + '/' + ae.name;
 cnt_arr[count++].name = 'cnt-co';
+=======
+cnt_arr[count++].name = 'cnt-co2';
+>>>>>>> 8549a15a18dea863ef8f052aec4d3b185275f89b
 
 
 // build sub
