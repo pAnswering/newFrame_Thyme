@@ -10,7 +10,7 @@ var exec = require("child_process").exec;
 var sensorLib = require('node-dht-sensor');
 //var sh_serial = require('./serial');
 
-var useparentport = '';
+var useparentport = '3105';
 var useparenthostname = '';
 
 var upload_arr = [];
@@ -62,8 +62,25 @@ fs.readFile('conf.xml', 'utf-8', function (err, data) {
 
 
 var tas_state = 'connect';
+tas_man_count = 0;
 
 var upload_client = new net.Socket();
+
+upload_client.connect(useparentport, useparenthostname, function() {
+            console.log('upload Connected');
+            tas_download_count = 0;
+            for (var i = 0; i < download_arr.length; i++) {
+                console.log('download Connected - ' + download_arr[i].ctname + ' hello');
+                var cin = {ctname: download_arr[i].ctname, con: 'hello'};
+                upload_client.write(JSON.stringify(cin) + '<EOF>');
+            }
+
+            if (tas_download_count >= download_arr.length) {
+                tas_state = 'upload';
+            }
+});
+
+
 
 upload_client.on('data', function(data) {
 
@@ -79,10 +96,11 @@ upload_client.on('data', function(data) {
                 console.log('Received: data format mismatch');
             }
             else {
+	
                 if (sink_obj.con == 'hello') {
                     console.log('Received: ' + data);
 
-                    if (++tas_man_count >= download_arr.length) {
+                    if (tas_man_count >= download_arr.length) {
                         tas_state = 'upload';
                     }
                 }
@@ -107,34 +125,45 @@ upload_client.on('data', function(data) {
 });
 
 
+var count = 0;
+var humid = -1;
+var temp = -1;
+
+
+
 var sensor = {
  initialize: function () {
-   return sensorLib.initialize(11, 7); // dht version: 11, using 25 pin
+   return sensorLib.initialize(11, 4); // dht version: 11, using 25 pin
  },
  read: function () {
    var readout = sensorLib.read();
-
    if(tas_state == 'upload') {
        for(var i = 0; i < upload_arr.length; i++) {
+	console.log(upload_arr.length);
            if(upload_arr[i].ctname == 'cnt-temp') {
-               var cin = {ctname: upload_arr[i].ctname, con: readout.temperature.toFixed(2)};
-               console.log('SEND : ' + JSON.stringify(cin) + ' ---->');
-               upload_client.write(JSON.stringify(cin) + '<EOF>');
-               break;
+		if(readout.temperature.toFixed(4) >= temp +0.3  || readout.temperature.toFixed(2) <= temp - 0.3 || count >= 5){
+               		var cin = {ctname: upload_arr[i].ctname, con: readout.temperature.toFixed(2)};
+               		console.log('SEND : ' + JSON.stringify(cin) + ' ---->');
+               		upload_client.write(JSON.stringify(cin) + '<EOF>');
+			temp = readout.temperature.toFixed(2);
+		}
+		else count ++;
+		console.log(temp);
+        
            }
-           if(upload_arr[i].ctname == 'cnt-humid') {
+           else if(upload_arr[i].ctname == 'cnt-humid') {
                var cin = {ctname: upload_arr[i].ctname, con: readout.humidity.toFixed(2)};
                console.log('SEND : ' + JSON.stringify(cin) + ' ---->');
                upload_client.write(JSON.stringify(cin) + '<EOF>');
-               break;
+             	break;
            }
        }
    }
-
-   console.log('Temperature: ' + readout.temperature.toFixed(2) + 'C, ' + 'humidity: ' + readout.humidity.toFixed(2) + '%');
+   
+   console.log('Temperature: ' + readout.temperature.toFixed(4) + 'C, ' + 'humidity: ' + readout.humidity.toFixed(2) + '%');
    setTimeout(function () {
      sensor.read();
-   }, 2000);
+   }, 1000);
  }
 };
 

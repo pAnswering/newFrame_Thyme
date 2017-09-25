@@ -6,7 +6,18 @@
     </tas>
     <upload>
         <ctname>cnt-temp</ctname>
+        <id>temp</id>
+    </upload>
+    <upload>
         <ctname>cnt-humid</ctname>
-        <id>fe80:0000:0000:0000:0212:4b00:0235:bce5</id>
-    </download>
+        <id>humid</id>
+    </upload>
+<upload>
+        <ctname>cnt-smoke</ctname>
+        <id>smoke</id>
+    </upload>
+<upload>
+        <ctname>cnt-co</ctname>
+        <id>co</id>
+    </upload>
 </m2m:conf>

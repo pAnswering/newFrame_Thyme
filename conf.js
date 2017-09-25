@@ -23,7 +23,7 @@ var cnt_arr = [];
 var sub_arr = [];
 var acp = {};
 
-conf.useprotocol = 'mqtt'; // select one for 'http' or 'mqtt' or 'coap' or 'ws'
+conf.useprotocol = 'http'; // select one for 'http' or 'mqtt' or 'coap' or 'ws'
 
 // build cse
 cse.host        = '192.168.0.21';
@@ -52,21 +52,16 @@ ae.tasport      = '3105';
 var count = 0;
 cnt_arr[count] = {};
 cnt_arr[count].parent = '/' + cse.name + '/' + ae.name;
-cnt_arr[count++].name = 'cnt-localTime';
-cnt_arr[count] = {};
-cnt_arr[count].parent = '/' + cse.name + '/' + ae.name;
 cnt_arr[count++].name = 'cnt-temp';
 cnt_arr[count] = {};
 cnt_arr[count].parent = '/' + cse.name + '/' + ae.name;
 cnt_arr[count++].name = 'cnt-humid';
 cnt_arr[count] = {};
 cnt_arr[count].parent = '/' + cse.name + '/' + ae.name;
-cnt_arr[count++].name = 'cnt-co2';
+cnt_arr[count++].name = 'cnt-smoke';
 cnt_arr[count] = {};
 cnt_arr[count].parent = '/' + cse.name + '/' + ae.name;
-cnt_arr[count++].name = 'cnt-smoke';
-
-
+cnt_arr[count++].name = 'cnt-co';
 
 
 // build sub

@@ -17,7 +17,7 @@ var serialport = require('serialport');
 
 var usecomport = '';
 var usebaudrate = '';
-var useparentport = '';
+var useparentport = 3105;
 var useparenthostname = '';
 
 var upload_arr = [];
